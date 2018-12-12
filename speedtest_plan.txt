@@ -2,10 +2,14 @@ Project Objective:
 to create a website that shows hourly internet speeds
 
 Pieces of the Project:
-	speedtest-cli
-	crontab
-	sqlite database
+#	speedtest-cli
+#	crontab
+#	sqlite database
+	#	create database
+	#	create table for data
 	python
+	#	etl data
+		matplotlib graph
 	website
 	webhosting
 
