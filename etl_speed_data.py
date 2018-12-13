@@ -46,41 +46,83 @@ v10 = outlist[9].replace('''
 vals = ','.join(map(str,[v1,v2,v3,v4,v5,v6,v7,v8,v9,v10]))
 with open('/home/slice/compute/run_log.txt','a+') as l:
         l.write("%s\n"%vals)
-try:
-	#load data to the sqlite database
-	import sqlite3
+
+#load data to the sqlite database
+import sqlite3
+from sqlite3 import Error
+try: #create db file or connect to existing file
 	conn = sqlite3.connect('/home/slice/compute/speedtest.db')
-	c = conn.cursor()
-	
-	stmnt = """INSERT INTO isp_speed_log (
-	          server_id,
-	          sponser,
-	          server_name,
-	          test_time,
-	          distance,
-	          ping,
-	          download,
-	          upload,
-	          ip_address) 
-	              VALUES (
-	              {sid},
-	              '{spon}',
-	              '{snm}',
-	              '{tt}',
-	              {dist},
-	              {ping},
-	              {down},
-	              {up},
-	              '{ip}');""".format(
-	              sid=v1,spon=v2,snm=v3,tt=v4,dist=v5,ping=6,down=v7,up=v8,ip=v10)
+except: Error as e:
+	print(e)
+        log = "could not connect to database error:%s"% e
+        with open('/home/slice/compute/run_log.txt','a+') as l:
+                l.write("%s\n"%stmnt)
+	sys.exit("sqlite insert failed")
+
+c = conn.cursor()
+# create table if not exists
+stmnt = """CREATE TABLE IF NOT EXISTS isp_speed_log (
+	server_id INT,
+	sponser VARCHAR(20),
+	server_name VARCHAR(20),
+	test_time datetime PRIMARY KEY,
+	distance float,
+	ping float,
+	download float,
+	upload float,
+	ip_address VARCHAR(15)
+	);"""
+try:
+	c.execute(stmnt)
+	conn.commit()
+except Error as e:
+	print(e)
+	log = "could not run createif not exists statement:%s"% e
+	with open('/home/slice/compute/run_log.txt','a+') as l:
+                l.write("%s\n"%stmnt)
+        sys.exit("sqlite create table failed")
+# insert speed log data into database table
+stmnt = """INSERT INTO isp_speed_log (
+          server_id,
+          sponser,
+          server_name,
+          test_time,
+          distance,
+          ping,
+          download,
+          upload,
+          ip_address)
+              VALUES (
+              {sid},
+              '{spon}',
+              '{snm}',
+              '{tt}',
+              {dist},
+              {ping},
+              {down},
+              {up},
+              '{ip}');""".format(
+              sid=v1,spon=v2,snm=v3,tt=v4,dist=v5,ping=6,down=v7,up=v8,ip=v10)
+try:
 	c.execute(stmnt)
 	conn.commit()
 except:
-	stmnt = "data could not be added to the database"
+	log = "data could not be added to the database"
 	with open('/home/slice/compute/run_log.txt','a+') as l:
-	        l.write("%s\n"%stmnt)
+	        l.write("%s\n"%log)
 	sys.exit("sqlite insert failed")
-stmnt = "data was inserted to the sqlite database"
+
+log = "data was inserted to the sqlite database"
 with open('/home/slice/compute/run_log.txt','a+') as l:
-	l.write("%s\n"%stmnt)
+	l.write("%s\n"%log)
+# remove data older than three months
+#stmnt = """DELETE FROM isp_speed_log WHERE date(test_time,'%Y-%m-%dT%H:%M:%S.%fZ') < date('now','-90 day');"""
+
+try:
+	c.execute(stmnt)
+	conn.commit()
+except Error as e:
+	log = "data could not be deleted from table:%s"%e
+	with open('/home/slice/compute/run_log.txt','a+') as l:
+		l.write("%s\n"%log)
 
