@@ -13,7 +13,7 @@ print(speed)
 
 log = '%s'%(datetime.datetime.now())+'finished speedtest, running insert\n'
 with open('/home/slice/compute/run_log.txt','a+') as l:
-        l.write(log)
+	l.write(log)
 
 cleanput = speed.decode('utf-8')
 
@@ -45,18 +45,18 @@ v10 = outlist[9].replace('''
 
 vals = ','.join(map(str,[v1,v2,v3,v4,v5,v6,v7,v8,v9,v10]))
 with open('/home/slice/compute/run_log.txt','a+') as l:
-        l.write("%s\n"%vals)
+	l.write("%s\n"%vals)
 
 #load data to the sqlite database
 import sqlite3
 from sqlite3 import Error
 try: #create db file or connect to existing file
 	conn = sqlite3.connect('/home/slice/compute/speedtest.db')
-except: Error as e:
+except Error as e:
 	print(e)
-        log = "could not connect to database error:%s"% e
-        with open('/home/slice/compute/run_log.txt','a+') as l:
-                l.write("%s\n"%stmnt)
+	log = "could not connect to database error: %s" % (e)
+	with open('/home/slice/compute/run_log.txt','a+') as l:
+		l.write("%s\n" % log)
 	sys.exit("sqlite insert failed")
 
 c = conn.cursor()
@@ -77,10 +77,10 @@ try:
 	conn.commit()
 except Error as e:
 	print(e)
-	log = "could not run createif not exists statement:%s"% e
+	log = "could not run createif not exists statement: %s\n" % e
 	with open('/home/slice/compute/run_log.txt','a+') as l:
-                l.write("%s\n"%stmnt)
-        sys.exit("sqlite create table failed")
+		l.write("%s\n"%stmnt)
+	sys.exit("sqlite create table failed")
 # insert speed log data into database table
 stmnt = """INSERT INTO isp_speed_log (
           server_id,
@@ -122,7 +122,8 @@ try:
 	c.execute(stmnt)
 	conn.commit()
 except Error as e:
-	log = "data could not be deleted from table:%s"%e
-	with open('/home/slice/compute/run_log.txt','a+') as l:
-		l.write("%s\n"%log)
+	log = "data could not be deleted from table: %s" % e
+	print(log)
+
+
 
