@@ -9,6 +9,7 @@ Pieces of the Project:
 	#	create table for data
 	python
 	#	etl data
+	#	debug errors
 		matplotlib graph
 	website
 	webhosting
