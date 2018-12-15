@@ -13,4 +13,3 @@ Pieces of the Project:
 		matplotlib graph
 	website
 	webhosting
-
