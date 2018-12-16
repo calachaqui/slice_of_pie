@@ -10,6 +10,12 @@ Pieces of the Project:
 	python
 	#	etl data
 	#	debug errors
-		matplotlib graph
+	#	matplotlib graph
+			#pull in time and date in two lists to python
+			#plot them
+		Clean up plot of data
+			fix y range to 0
+			find a way to label by day
+			better graphing graphics
 	website
 	webhosting
