@@ -1,17 +1,36 @@
 #!/home/slice/berryconda3/bin/python
+
 import matplotlib
+# Force matplotlib to not use any Xwindows backend.
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
-#Data for platting
-t = np.arange(0.0,2.0,0.01)
-s = 1+ np.sin(2 * np.pi * t)
+# Data for platting
+import sqlite3,sys
+from sqlite3 import Error
+
+conn = sqlite3.connect("/home/slice/compute/speedtest.db")
+cur = conn.cursor()
+
+stmnt = "SELECT test_time,round(download/1000000,2) FROM isp_speed_log;"
+cur.execute(stmnt)
+
+rows = cur.fetchall()
+downloads = {}
+for row in rows:
+        downloads[row[0]]= row[1]
+
+# setup data for plotting
+lists = sorted(downloads.items())
+x,y = zip(*lists)
+
 
 fig, ax = plt.subplots()
-ax.plot(t,s)
+ax.plot(x,y)
 
-ax.set(xlabel='time (s)',ylabel='voltage (mV)',
-	title='About as simple as it gets, folks')
+ax.set(xlabel='datetime',ylabel='Mbps isp speed',
+	title='internet speeds of time')
 ax.grid()
 fig.savefig("/home/slice/compute/test_figure.png")
-plt.show()
+
