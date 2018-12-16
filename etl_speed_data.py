@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/home/slice/berryconda3/bin/python
 
 import datetime,os,subprocess,sys
 
