@@ -41,7 +41,7 @@ for row in rows:
 	hod[row[0]]= row[1]
 
 # count and speed by source
-stmnt = """SELECT sponser,count(*),round(avg(download/1000000,2)
+stmnt = """SELECT sponser,count(*),round(avg(download/1000000),2)
 	FROM isp_speed_log GROUP BY sponser;"""
 cur.execute(stmnt)
 rows = cur.fetchall()
@@ -71,7 +71,7 @@ ax.set_ylim(ymin=0)
 ax.set(xlabel='datetime',ylabel='Mbps isp speed',
 	title='internet speeds over 48 hours')
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pi/graphs/two_days.png")
+fig.savefig("/home/slice/compute/slice_of_pie/graphs/two_days.png")
 
 # setup data for avg speed by day
 lists = sorted(dow.items())
@@ -82,7 +82,7 @@ ax.set_ylim(ymin=0)
 ax.set(xlabel='day of week',ylabel='avg isp speed',
 	title='avg internet speed by day of week')
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pi/graphs/weekday.png")
+fig.savefig("/home/slice/compute/slice_of_pie/graphs/weekday.png")
 
 # setup for avg speed by hour
 lists = sorted(hod.items())
@@ -92,7 +92,7 @@ ax.set_ylim(ymin=0)
 ax.set(xlabel='hour of day',ylabel='avg isp speed',
 	title='avg internet speed by hour of day')
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pi/graphs/hourly.png")
+fig.savefig("/home/slice/compute/slice_of_pie/graphs/hourly.png")
 
 # setup for count by source
 lists = sorted(scount.items())
@@ -102,7 +102,7 @@ ax.set_ylim(ymin=0)
 ax.set(xlabel='source of service',ylabel='count of usage',
         title='count of usage of internet sources')
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pi/graphs/source_count.png")
+fig.savefig("/home/slice/compute/slice_of_pie/graphs/source_count.png")
 
 # setup for speed by source
 lists = sorted(sspeed.items())
@@ -112,7 +112,7 @@ ax.set_ylim(ymin=0)
 ax.set(xlabel='source of service',ylabel='avg speed',
         title='average speed of download by source')
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pi/graphs/source_speed.png")
+fig.savefig("/home/slice/compute/slice_of_pie/graphs/source_speed.png")
 
 # find a way to display ip address dates
 
