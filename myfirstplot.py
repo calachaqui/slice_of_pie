@@ -23,7 +23,7 @@ for row in rows:
         downloads[row[0]]= row[1]
 
 # avg speed by day
-stmnt = """SELECT strftime('%w',test_time,'locatime'),avg(round(download/1000000,2))
+stmnt = """SELECT strftime('%w',test_time,'localtime'),round(avg(download/1000000),2)
 	FROM isp_speed_log GROUP BY strftime('%w',test_time,'localtime');"""
 cur.execute(stmnt)
 rows = cur.fetchall()
@@ -32,7 +32,7 @@ for row in rows:
 	dow[row[0]]= row[1]
 
 # avg speed by hour of the day
-stmnt = """SELECT strftime('%H',test_time,'localtime'), avg(round(download/1000000,2))
+stmnt = """SELECT strftime('%H',test_time,'localtime'), round(avg(download/1000000),2)
 	FROM isp_speed_log GROUP BY strftime('%H',test_time,'localtime');"""
 cur.execute(stmnt)
 rows = cur.fetchall()
@@ -60,59 +60,71 @@ ip = {}
 for row in rows:
 	ip[row[0]]= row[1]
 
+#print(dow)
+#print(hod)
+#print(scount)
+#print(sspeed)
+#print(ip)
+
 #########plotting the data##########
 # setup data for 48 hours
 lists = sorted(downloads.items())
 x,y = zip(*lists)
-fig, ax = plt.subplots()
+figa = plt.figure()
+ax = figa.add_subplot(111)
 ax.plot(x,y)
 ax.set_ylim(ymin=0)
-
 ax.set(xlabel='datetime',ylabel='Mbps isp speed',
 	title='internet speeds over 48 hours')
+plt.xticks(rotation=90)
 ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pie/graphs/two_days.png")
+figa.savefig("/home/slice/compute/slice_of_pie/graphs/two_days.png")
 
-# setup data for avg speed by day
+# setup for avg speed by day
 lists = sorted(dow.items())
 x,y = zip(*lists)
-fig, ax = plt.subplots()
-ax.plot(x,y)
-ax.set_ylim(ymin=0)
-ax.set(xlabel='day of week',ylabel='avg isp speed',
-	title='avg internet speed by day of week')
-ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pie/graphs/weekday.png")
+figb = plt.figure()
+plt.bar(x,y)
+plt.xlabel('day of week')
+plt.ylabel('avg speed')
+plt.title('Avg Download Speed By Day')
+plt.xticks(x)
+figb.savefig("/home/slice/compute/slice_of_pie/graphs/weekday.png")
 
 # setup for avg speed by hour
 lists = sorted(hod.items())
 x,y = zip(*lists)
-fig, ax = plt.subplots()
-ax.set_ylim(ymin=0)
-ax.set(xlabel='hour of day',ylabel='avg isp speed',
-	title='avg internet speed by hour of day')
-ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pie/graphs/hourly.png")
+figc = plt.figure()
+plt.bar(x,y)
+plt.xlabel('hour of day')
+plt.ylabel('avg speed')
+plt.title('Avg Download Speed By Hour')
+plt.xticks(x)
+plt.xticks(rotation=45)
+figc.savefig("/home/slice/compute/slice_of_pie/graphs/hourly.png")
 
 # setup for count by source
 lists = sorted(scount.items())
 x,y = zip(*lists)
-fig, ax = plt.subplots()
-ax.set_ylim(ymin=0)
-ax.set(xlabel='source of service',ylabel='count of usage',
-        title='count of usage of internet sources')
-ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pie/graphs/source_count.png")
+figd = plt.figure()
+plt.bar(x,y)
+plt.xlabel('source of service')
+plt.ylabel('count of usage')
+plt.title('Count of Usage by Internet Source')
+plt.xticks(x)
+#plt.xticks(rotation=315)
+figd.savefig("/home/slice/compute/slice_of_pie/graphs/source_count.png")
 
 # setup for speed by source
 lists = sorted(sspeed.items())
 x,y = zip(*lists)
-fig, ax = plt.subplots()
-ax.set_ylim(ymin=0)
-ax.set(xlabel='source of service',ylabel='avg speed',
-        title='average speed of download by source')
-ax.grid()
-fig.savefig("/home/slice/compute/slice_of_pie/graphs/source_speed.png")
+fige = plt.figure()
+plt.bar(x,y)
+plt.xlabel('source of service')
+plt.ylabel('avg speed')
+plt.title('Avg Speed by Internet Source')
+plt.xticks(x)
+fige.savefig("/home/slice/compute/slice_of_pie/graphs/source_speed.png")
 
-# find a way to display ip address dates
+## find a way to display ip address dates
 
