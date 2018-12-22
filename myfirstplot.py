@@ -14,7 +14,7 @@ from sqlite3 import Error
 # 48 hour download speeds
 conn = sqlite3.connect("/home/slice/compute/speedtest.db")
 cur = conn.cursor()
-stmnt = """SELECT datetime(test_time,'localtime'),round(download/1000000,2)
+stmnt = """SELECT strftime('%d %H',test_time,'localtime'),round(download/1000000,2)
 	FROM isp_speed_log ORDER BY test_time DESC LIMIT 48;"""
 cur.execute(stmnt)
 rows = cur.fetchall()
@@ -76,7 +76,7 @@ ax.plot(x,y)
 ax.set_ylim(ymin=0)
 ax.set(xlabel='datetime',ylabel='Mbps isp speed',
 	title='internet speeds over 48 hours')
-plt.xticks(rotation=90)
+plt.xticks(fontsize=6, rotation=315)
 ax.grid()
 figa.savefig("/home/slice/compute/slice_of_pie/graphs/two_days.png")
 
