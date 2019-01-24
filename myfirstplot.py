@@ -112,6 +112,7 @@ plt.xlabel('source of service')
 plt.ylabel('count of usage')
 plt.title('Count of Usage by Internet Source')
 plt.xticks(x)
+plt.xticks(rotation=45)
 #plt.xticks(rotation=315)
 figd.savefig("/home/slice/compute/slice_of_pie/graphs/source_count.png")
 
@@ -124,6 +125,7 @@ plt.xlabel('source of service')
 plt.ylabel('avg speed')
 plt.title('Avg Speed by Internet Source')
 plt.xticks(x)
+plt.xticks(rotation=45)
 fige.savefig("/home/slice/compute/slice_of_pie/graphs/source_speed.png")
 
 ## find a way to display ip address dates
