@@ -2,18 +2,18 @@
 
 import datetime,os,subprocess,sys
 
-log = '%s'%(datetime.datetime.now()) +'running speedtest-cli\n'
-with open('/home/slice/compute/run_log.txt','a+') as l:
-	l.write(log)
+#log = '%s'%(datetime.datetime.now()) +'running speedtest-cli\n'
+#with open('/home/slice/compute/run_log.txt','a+') as l:
+#	l.write(log)
 
 
 #run the speedtest-cli and get output, date, metadata
 speed = subprocess.check_output(['/usr/local/bin/speedtest-cli','--csv'])
 print(speed)
 
-log = '%s'%(datetime.datetime.now())+'finished speedtest, running insert\n'
-with open('/home/slice/compute/run_log.txt','a+') as l:
-	l.write(log)
+#log = '%s'%(datetime.datetime.now())+'finished speedtest, running insert\n'
+#with open('/home/slice/compute/run_log.txt','a+') as l:
+#	l.write(log)
 
 cleanput = speed.decode('utf-8')
 
@@ -44,8 +44,8 @@ v10 = outlist[9].replace('''
 ''','')
 
 vals = ','.join(map(str,[v1,v2,v3,v4,v5,v6,v7,v8,v9,v10]))
-with open('/home/slice/compute/run_log.txt','a+') as l:
-	l.write("%s\n"%vals)
+#with open('/home/slice/compute/run_log.txt','a+') as l:
+#	l.write("%s\n"%vals)
 
 #load data to the sqlite database
 import sqlite3
@@ -112,9 +112,9 @@ except:
 	        l.write("%s\n"%log)
 	sys.exit("sqlite insert failed")
 
-log = "data was inserted to the sqlite database"
-with open('/home/slice/compute/run_log.txt','a+') as l:
-	l.write("%s\n"%log)
+#log = "data was inserted to the sqlite database"
+#with open('/home/slice/compute/run_log.txt','a+') as l:
+#	l.write("%s\n"%log)
 # remove data older than three months
 #stmnt = """DELETE FROM isp_speed_log WHERE date(test_time,'%Y-%m-%dT%H:%M:%S.%fZ') < date('now','-90 day');"""
 
@@ -124,6 +124,3 @@ try:
 except Error as e:
 	log = "data could not be deleted from table: %s" % e
 	print(log)
-
-
-
